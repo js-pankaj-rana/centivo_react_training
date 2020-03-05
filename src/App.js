@@ -1,91 +1,66 @@
 import React from 'react';
-import CommentItem from './CommontItem';
-import PostItem from './PostItem'; 
-const BASE_API = 'https://jsonplaceholder.typicode.com/';
+import { 
+    Navbar,
+    NavbarToggler,
+    NavbarBrand,
+    Nav,
+    NavItem
+} from 'reactstrap';
 
-class Comment extends React.Component{
-    constructor(props){
-        super(props)
-    
-        this.state = {
-            posts: null,
-            comments: null,
-            albums: null,
-            photos: null,
-            isFetching: false
-        }
-        this.fetchingComments = this.fetchingComments.bind(this);
-    }
-  
-    
-    fetchingComments = (apiType) => {
-        fetch(BASE_API + apiType).then(
-            response => response.json()             
-        ).then(
-            result => this.setState({[apiType]: result})
-        ).catch(e => console.log(e, "error"))
-    }
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link
+  } from "react-router-dom";
 
-    render(){
+import 'bootstrap/dist/css/bootstrap.min.css';
+import DashBoard from './components/dashboard';
+import PostsWrapper from './components/posts';
+import UserWrapper from './components/users';
 
-        return (
-            <div className="tabs">
-                <button onClick={ () => this.fetchingComments('comments') }>Show comments</button>
-                <button onClick={ () => this.fetchingComments('posts') }>Show Posts</button>
-                {this.state.comments && <CommentItem comments={this.state.comments} />} 
-                {this.state.posts && <PostItem posts={this.state.posts} />} 
-            </div>
-        )
-    }
+const styleMargin = {
+    marginLeft: '10px'
 }
 
 
-// import React from 'react';
-// import './App.css';
-// import Comment from './Comment';
+const msg =  "Hello World";
 
-// class App extends React.Component {
-//   constructor(props){
-//     super(props);
+function MyComponent() {
 
-//     this.state = {
-//         count: 0,
-//         rendering: false
-//     }
-//   }
+    return (<>
+            <Router>
+                <Navbar color="light" light expand="md">
+                    <NavbarBrand href="/">reactstrap</NavbarBrand>
+                    <NavbarToggler />
+                        <Nav className="mr-auto" navbar>
+                            <NavItem style={styleMargin}>
+                                <Link to="/">DashBoard</Link>
+                            </NavItem>
+                            <NavItem style={styleMargin}>
+                                <Link to="/posts">Posts</Link>
+                            </NavItem>
+                            <NavItem style={styleMargin}>
+                                <Link to="/users">Users</Link>
+                            </NavItem>
+                        </Nav>
+                </Navbar>
 
-//   handleIncrement = () => {
-//     // this.state.count += 1; 
-//     this.setState( (prevState) => {
-//       return {
-//         count: prevState.count + 1
-//       }
-//     })
-//   }
+                <Switch>
+                    <Route exact path="/">
+                        <DashBoard />
+                    </Route>
+                    <Route exact path="/posts">
+                        <PostsWrapper />
+                    </Route>
+                    <Route exact path="/users">
+                        <UserWrapper />
+                    </Route>
+                    </Switch>
+            </Router>
+            </>
+        )
+    }
+    
 
-//   handleDecrement = () => {
-//     this.setState( (prevState) => {
-//       return {
-//         count:  prevState.count - 1
-//       }
-//     })
-//   }
-
-
-//   render(){
-//       return (
-//         <>
-//           <Comment />
-//           {/* <center>
-//           <div className="counter-view">{this.state.count}</div>
-//           <button type="button" className="btn btn-primary" onClick={this.handleIncrement}>Count +</button>
-//           <button type="button" className="btn btn-secondary" onClick={this.handleDecrement}>Count -</button>
-//           </center> */}
-//         </>
-//       )
-//   }
-// }
-
-
-
- export default Comment;
+export default MyComponent;
